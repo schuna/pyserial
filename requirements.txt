@@ -1,4 +1,3 @@
 pyserial
-mock-serial
 pytest
 retry
