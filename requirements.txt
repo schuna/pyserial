@@ -1,3 +1,4 @@
 pyserial
 pytest
-retry
+typer[all]
+dependency-injector

@@ -1,0 +1,15 @@
+{
+  "server": {
+    "port": "COM6",
+    "baudrate": 115200,
+    "timeout": 5
+  },
+  "client": {
+    "port": "COM7",
+    "baudrate": 115200,
+    "timeout": 5
+  },
+  "observer": {
+    "id": 1
+  }
+}

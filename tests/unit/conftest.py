@@ -1,17 +1,33 @@
-import pytest
-from serial import Serial
+import logging
 
-PORT_A = "COM6"
-PORT_B = "COM7"
+import pytest
+from dependency_injector.wiring import Provide, inject
+from serial.threaded import ReaderThread
+
+from api.container import Container
+from api.threads import SerialReader
 
 
 @pytest.fixture
-def serial_ports():
-    print("Setup Ports")
-    server = Serial(port=PORT_A, baudrate=115200, timeout=5)
-    client = Serial(port=PORT_B, baudrate=115200, timeout=5)
+def container():
+    container = Container()
+    container.init_resources()
+    container.wire(modules=[__name__])
+    yield container
 
+
+@inject
+def get_transports(
+        server: SerialReader = Provide[Container.server_thread],
+        client: ReaderThread = Provide[Container.client_thread]):
+    return server, client
+
+
+@pytest.fixture
+def transports(container):
+    server, client = get_transports()
+    logging.info("Setup transports")
     yield server, client
-    print("Tear down Ports")
+    logging.info("Teardown transports")
     server.close()
     client.close()

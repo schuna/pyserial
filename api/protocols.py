@@ -1,4 +1,5 @@
 import sys
+import time
 import traceback
 from typing import Callable, Union
 
@@ -75,3 +76,17 @@ class ClientPrintLines(LineReader):
         if exc:
             traceback.print_exc(exc)
         sys.stdout.write('client port closed\n')
+
+
+def protocol_scenario(client_protocol, server_protocol):
+    client_protocol.write_line("get 1,1")
+    time.sleep(1)
+    client_protocol.write_line("set 1,150")
+    time.sleep(1)
+    client_protocol.write_line("get 1,1")
+    time.sleep(1)
+    client_protocol.write_line("get 2,1")
+    time.sleep(1)
+    server_protocol.write_line("bye")
+    time.sleep(1)
+    client_protocol.write_line("bye")
